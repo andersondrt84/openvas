@@ -18,7 +18,8 @@ Este repo já inclui `stack.env` com variáveis usadas no `docker-compose.yml`:
 
 - `OPENVAS_USERNAME`
 - `OPENVAS_PASSWORD`
-- `OPENVAS_HTTPS_PORT`
+- `OPENVAS_PORT`
+- `OPENVAS_ENABLE_HTTPS`
 
 Antes de subir em produção, altere usuário e senha no `stack.env`.
 
@@ -26,7 +27,7 @@ Antes de subir em produção, altere usuário e senha no `stack.env`.
 
 Após subir a stack e aguardar a inicialização dos feeds:
 
-- URL: `https://SEU_HOST:${OPENVAS_HTTPS_PORT}` (padrão `8080`)
+- URL: `http://SEU_HOST:${OPENVAS_PORT}` (padrão `8080` com `OPENVAS_ENABLE_HTTPS=false`)
 - Usuário: valor de `OPENVAS_USERNAME`
 - Senha: valor de `OPENVAS_PASSWORD`
 
@@ -67,3 +68,12 @@ docker compose up -d
 ```
 
 > Observação: `nc` não existe dentro da imagem por padrão. Isso é esperado e não indica erro do OpenVAS.
+
+
+## Se aparecer apenas "connection refused"
+
+1. Confirme o protocolo conforme o `stack.env`:
+   - `OPENVAS_ENABLE_HTTPS=false`  -> acesse `http://SEU_HOST:${OPENVAS_PORT}`
+   - `OPENVAS_ENABLE_HTTPS=true`   -> acesse `https://SEU_HOST:${OPENVAS_PORT}`
+2. Recrie a stack após alterar variáveis para aplicar no container.
+3. Verifique no host se a porta está em LISTEN com `ss -tulpen | grep :8080`.
