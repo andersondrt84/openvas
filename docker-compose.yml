@@ -13,6 +13,9 @@ services:
       RELAYHOST: ""
       SMTPPORT: 25
       REDISDBS: 512
+    extra_hosts:
+      - "rsync.immauss.com:57.129.41.31"
+      - "feed.community.greenbone.net:45.135.106.143"
     volumes:
       - openvas_data:/data
 

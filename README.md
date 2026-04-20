@@ -48,3 +48,22 @@ git ls-remote https://github.com/SEU_USUARIO/SEU_REPO.git
 ```
 
 Se esse comando falhar no host, o Portainer também vai falhar.
+
+
+## Se o feed sync ficar preso mesmo com porta 873 liberada
+
+Se `nc -vz` no host funcionar, mas o container continuar preso no download dos feeds, o problema pode ser resolução/rota IPv6.
+
+Este `docker-compose.yml` já inclui `extra_hosts` para forçar IPv4 nos endpoints de feed:
+
+- `rsync.immauss.com -> 57.129.41.31`
+- `feed.community.greenbone.net -> 45.135.106.143`
+
+Após atualizar a stack, force recriação do container para aplicar os hosts:
+
+```bash
+docker compose down
+docker compose up -d
+```
+
+> Observação: `nc` não existe dentro da imagem por padrão. Isso é esperado e não indica erro do OpenVAS.
