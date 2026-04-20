@@ -1,0 +1,23 @@
+services:
+  openvas:
+    image: immauss/openvas:latest
+    container_name: openvas
+    hostname: openvas
+    restart: unless-stopped
+    ports:
+      - "${OPENVAS_PORT:-8080}:9392"
+    environment:
+      USERNAME: ${OPENVAS_USERNAME}
+      PASSWORD: ${OPENVAS_PASSWORD}
+      HTTPS: ${OPENVAS_ENABLE_HTTPS:-false}
+      RELAYHOST: ""
+      SMTPPORT: 25
+      REDISDBS: 512
+    extra_hosts:
+      - "rsync.immauss.com:57.129.41.31"
+      - "feed.community.greenbone.net:45.135.106.143"
+    volumes:
+      - openvas_data:/data
+
+volumes:
+  openvas_data:
